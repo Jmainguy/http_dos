@@ -8,6 +8,6 @@ func main() {
 
     http.HandleFunc("/", loadPage)
 
-    http.ListenAndServe(":8000", nil)
+    http.ListenAndServe(":25550", nil)
 
 }

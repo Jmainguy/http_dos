@@ -1,21 +1,22 @@
 package main
 
 import (
-    "fmt"
     "net/http"
     "io"
-    "crypto/md5"
-    "time"
-    "strconv"
-    "html/template"
+    "os"
+   // "strconv"
+    "fmt"
 )
 
 func loadPage(w http.ResponseWriter, r *http.Request) {
-       fmt.Println("method:", r.Method)
-       crutime := time.Now().Unix()
-       h := md5.New()
-       io.WriteString(h, strconv.FormatInt(crutime, 10))
-       token := fmt.Sprintf("%x", h.Sum(nil))
-       t, _ := template.ParseFiles("index.gtpl")
-       t.Execute(w, token)
+    fmt.Println("method:", r.Method)
+    Openfile, _ := os.Open("./test.img")
+    defer Openfile.Close() //Close after function return
+    /*
+    FileStat, _ := Openfile.Stat()                     //Get info from file
+    FileSize := strconv.FormatInt(FileStat.Size(), 10) //Get file size as a string
+    */
+    w.Header().Set("Content-Disposition", "attachment; filename=neat.img")
+    w.Header().Set("Content-Length", "53687091")
+    io.Copy(w, Openfile)
 }
